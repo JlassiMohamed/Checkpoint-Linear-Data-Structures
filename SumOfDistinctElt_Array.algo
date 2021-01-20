@@ -1,51 +1,43 @@
 ALGORITHM SumOfDistinctElt_Array
 VAR
-    tab1 : ARRAY_OF INTEGER[50];
-    tab2 : ARRAY_OF INTEGER[50];
-
-    l1,l2: INTEGER;
-    i,j,sum : INTEGER := 0;
+    set1,set2 : ARRAY_OF INTEGER[20];
+    i,j : INTEGER;
+    sum : INTEGER :=  0;
+    found : BOOLEAN;
 
 BEGIN
+    // reading elements in the two sets
 
-    REPEAT
-        write("enter the length of tab1");
-        read(l1);
-    UNTIL (l1>=1)
+    // Compare each element of set one with the second set 
+    // and if element is not present then add that element to sum.
 
-    FOR i FROM 1 TO l1 STEP 1  DO
-        write("enter tab1[",i,"]");
-        read(tab1[i]);
-    END_FOR
-
-    REPEAT
-        write("enter the length of tab1");
-        read(l2);
-    UNTIL (l2>=1)
-
-    FOR i FROM 1 TO l2 STEP 1  DO
-        write("enter tab2[",i,"]");
-        read(tab2[i]);
-    END_FOR
-
-    FOR i FROM 0 TO l1-1 STEP 1 DO
-        WHILE ((tab1[i]<>tab2[j]) and (j<l2)) DO 
-            j := j+1;        
-        END_WHILE
-        IF (j=l2-1) THEN    
-            sum := sum+tab1[i];
+    FOR i FROM 0 TO set1.length-1 DO
+        found := FALSE;
+        FOR j FROM 0 TO set2.length-1 DO
+            IF(set1[i] = set2[j]) THEN
+                found := TRUE;
+                BREAK;
+            END
+        END_FOR
+        IF (NOT found) THEN
+            sum := sum + set1[i];
         END_IF
     END_FOR
 
-    FOR i FROM 0 TO l2-1 STEP 1 DO
-        WHILE ((tab2[i]<>tab1[j]) and (j<l1) DO
-            j := j+1;
-        END_WHILE
-        IF (j=l1-1) THEN
-            sum := sum+tab2[i];
+    //Then do the vice versa to add elements from the second set. 
+    FOR i FROM 0 TO set2.length-1 DO
+        found := FALSE;
+        FOR j FROM 0 TO set1.length-1 DO
+            IF(set2[i] = set1[j]) THEN
+                found := TRUE;
+                BREAK;
+            END
+        END_FOR
+        IF (NOT found) THEN
+            sum := sum + set2[i];
         END_IF
     END_FOR
 
     write("the sum of all distinct elements from two sets: ", sum);
-    
+
 END

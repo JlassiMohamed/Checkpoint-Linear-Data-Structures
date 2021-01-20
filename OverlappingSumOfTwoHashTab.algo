@@ -1,56 +1,41 @@
 ALGORITHM OverlappingSumOfTwoHashSet
 VAR
-    htab : HASH_TABLE<INTEGER,INTEGER>;
-    tab1,tab2,tab3 : ARRAY_OF INTEGER [50];
-
-    l1,l2: INTEGER;
-    i,sum : INTEGER := 0;
-
+    set1,set2 : ARRAY_OF INTEGER[20];
+    set_keys : ARRAY_OF INTEGER[40];
+    dict := HASH_TABLE<INTEGER,INTEGER>;
+    i, count : INTEGER;
+    sum : INTEGER := 0;
+    
 BEGIN
+    // reading elements in the two sets
 
-    REPEAT
-        write("enter the length of tab1");
-        read(l1);
-    UNTIL (l1>=1)
+    // Insert all the elements from
+    // both the sets with the element as key and its count (in both arrays).
 
-    FOR i FROM 1 TO l1 STEP 1  DO
-        write("enter tab1[",i,"]");
-        read(tab1[i]);
-    END_FOR
-
-    REPEAT
-        write("enter the length of tab1");
-        read(l2);
-    UNTIL (l2>=1)
-
-    FOR i FROM 1 TO l2 STEP 1  DO
-        write("enter tab2[",i,"]");
-        read(tab2[i]);
-    END_FOR
-
-    FOR i FROM 0 TO (l1 + l2 - 1) STEP 1  DO
-        IF (i<l1) THEN
-            tab3[i]=tab1[i];
-            htab.insert(tab3[i],i);
+    FOR i FROM 0 TO set1.length -1 STEP 1  DO
+        IF (dict.lookup(set1[i]) = TRUE) THEN
+            count := dict.get(set1[i]);
+            dict.insert(set1[i],count+1);
         ELSE
-            tab3[i]=tab2[i-l1];
-            htab.insert(tab3[i],i);
+            dict.insert(set1[i],1);
         END_IF
     END_FOR
 
-    FOR i FROM 0 TO tab3.length-1 STEP 1  DO
-        IF (htab.lookup(tab3[i])) THEN
-            htab.insert(tab3[i],2);
+    FOR i FROM 0 TO set2.length -1 STEP 1  DO
+        IF (dict.lookup(set2[i]) = TRUE) THEN
+            count := dict.get(set2[i]);
+            dict.insert(set2[i],count+1);
         ELSE
-            htab.insert(tab3[i],1);
+            dict.insert(set2[i],1);
         END_IF
     END_FOR
 
-    FOR i FROM 0 TO tab3.length-1 STEP 1  DO
-        IF (htab.get(tab3[i])=2) THEN
-            sum:=sum+tab3[i]*2;
+    //get sum of distinct elements
+    set_keys := dict.getKeys();
+    FOR i FROM 0 TO set_keys.length -1 STEP 1  DO
+        IF (dict.get(set_keys[i]) = 1) THEN
+            sum := sum +set_keys[i];
         END_IF
     END_FOR
 
-    write("the sum of overlapping elements in two sets", sum);
 END
